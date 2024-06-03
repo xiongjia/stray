@@ -1,7 +1,21 @@
 const htmlmin = require('html-minifier')
 
-module.exports = (eleventyConfig) => {
+const pluginNavigation = require("@11ty/eleventy-navigation");
 
+module.exports = (cfg) => {
+  cfg.addTransform('async-htmlmin', async (content, outputPath) => {
+    if (outputPath.toLowerCase().endsWith('.html')) {
+      return htmlmin.minify(content, {
+        useShortDoctype: true,
+        removeComments: true,
+        collapseWhitespace: true,
+      })
+    } else {
+      return content
+    }
+  })
+
+  cfg.addPlugin(pluginNavigation);
 
   return {
 		templateFormats: ["md", "njk", "html", "liquid"],
@@ -10,7 +24,8 @@ module.exports = (eleventyConfig) => {
 
     dir: {
 			input: "content",
-			includes: "includes",
+			includes: "_includes",
+      data: "_data",
 			output: "dist"
 		}
   }
