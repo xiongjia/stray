@@ -9,7 +9,6 @@ const postcssAutoprefixer = require('autoprefixer')
 const postcssImport = require('postcss-import')
 const postcssPurgecss = require('@fullhuman/postcss-purgecss')
 const tailwindcss = require('tailwindcss')
-const cssMqpacker = require('css-mqpacker')
 const cssnano = require('cssnano')
 const cssnanoPreset = require('cssnano-preset-lite')
 
@@ -22,7 +21,7 @@ module.exports = (cfg) => {
 
   strayInit11tyTansform(cfg)
   strayInit11tyPlugins(cfg)
-  cfg.on("eleventy.after", async ({ dir, runMode, outputMode }) => {
+  cfg.on("eleventy.after", async () => {
     strayPostcss()
   })
 
@@ -40,7 +39,7 @@ module.exports = (cfg) => {
   }
 }
 
-strayLog = (data) => {
+const strayLog = (data) => {
   console.log(`[stray] ${data}`)
 }
 
@@ -76,7 +75,7 @@ const strayPostcss = () => {
   const cssDist = path.join(__dirname, 'dist/bundle.css')
   const cssMapDist = path.join(__dirname, 'dist/bundle.css.map')
 
-  plugins = [
+  const plugins = [
     postcssAutoprefixer,
     postcssNested,
     postcssImport,
@@ -86,7 +85,6 @@ const strayPostcss = () => {
     postcssPurgecss({
       content: ["./dist/**/*.html"]
     }),
-    cssMqpacker,
     cssnano({preset:
       cssnanoPreset({
         discardComments: {removeAll: true}
@@ -95,7 +93,7 @@ const strayPostcss = () => {
   ]
   fs.readFile(cssEntry, (err, css) => {
     if (err) {
-      strayLog(`Load css ${css} failed ${err}`)
+      strayLog(`Load css file ${css} failed, error: ${err}`)
       throw err
     }
     postcss(plugins)
