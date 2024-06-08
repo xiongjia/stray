@@ -11,6 +11,7 @@ const postcssPurgecss = require('@fullhuman/postcss-purgecss')
 const tailwindcss = require('tailwindcss')
 const cssMqpacker = require('css-mqpacker')
 const cssnano = require('cssnano')
+const cssnanoPreset = require('cssnano-preset-lite')
 
 const pluginNavigation = require("@11ty/eleventy-navigation")
 const pluginBundle = require("@11ty/eleventy-plugin-bundle")
@@ -86,21 +87,26 @@ const strayPostcss = () => {
       content: ["./dist/**/*.html"]
     }),
     cssMqpacker,
-    cssnano
+    cssnano({preset:
+      cssnanoPreset({
+        discardComments: {removeAll: true}
+      })
+    })
   ]
   fs.readFile(cssEntry, (err, css) => {
     if (err) {
       strayLog(`Load css ${css} failed ${err}`)
       throw err
     }
-
     postcss(plugins)
       .process(css, {
-        SourceMap: {inline: true}
+        map: { inline: false, annotation: true },
+        to: cssDist,
+        from: cssEntry
       }).then(result => {
-        fs.writeFile(cssDist, result.css, () => true)
+        fs.writeFileSync(cssDist, result.css)
         if (result.map) {
-          fs.writeFile(cssMapDist, result.map.toString(), () => true)
+          fs.writeFileSync(cssMapDist, result.map.toString())
         }
       })
   })
