@@ -12,8 +12,6 @@ const cssnanoPreset = require('cssnano-preset-lite')
 
 const { strayLog } = require('./eleventy.infra.config.js')
 
-module.exports = { strayPostcss }
-
 const strayPostcss = () => {
   const cssEntry = path.join(__dirname, 'content/_includes/style/stray.css')
   strayLog(`Postcss input ${cssEntry}`)
@@ -56,3 +54,5 @@ const strayPostcss = () => {
       })
   })
 }
+
+module.exports = { strayPostcss }
