@@ -12,30 +12,29 @@ const tailwindcss = require('tailwindcss')
 const cssnano = require('cssnano')
 const cssnanoPreset = require('cssnano-preset-lite')
 
-const pluginNavigation = require("@11ty/eleventy-navigation")
-const pluginBundle = require("@11ty/eleventy-plugin-bundle")
-const { EleventyHtmlBasePlugin } = require("@11ty/eleventy")
-const pluginSyntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight")
+const pluginNavigation = require('@11ty/eleventy-navigation')
+const pluginBundle = require('@11ty/eleventy-plugin-bundle')
+const { EleventyHtmlBasePlugin } = require('@11ty/eleventy')
+const pluginSyntaxHighlight = require('@11ty/eleventy-plugin-syntaxhighlight')
 
 module.exports = (cfg) => {
-
   strayInit11tyTansform(cfg)
   strayInit11tyPlugins(cfg)
-  cfg.on("eleventy.after", async () => {
+  cfg.on('eleventy.after', async () => {
     strayPostcss()
   })
 
   return {
-		templateFormats: ["md", "njk", "html", "liquid"],
-    markdownTemplateEngine: "njk",
-		htmlTemplateEngine: "njk",
+    templateFormats: ['md', 'njk', 'html', 'liquid'],
+    markdownTemplateEngine: 'njk',
+    htmlTemplateEngine: 'njk',
 
     dir: {
-			input: "content",
-			includes: "_includes",
-      data: "_data",
-			output: "dist"
-		}
+      input: 'content',
+      includes: '_includes',
+      data: '_data',
+      output: 'dist',
+    },
   }
 }
 
@@ -62,9 +61,9 @@ const strayInit11tyTansform = (cfg) => {
 const strayInit11tyPlugins = (cfg) => {
   cfg.addPlugin(pluginNavigation)
   cfg.addPlugin(EleventyHtmlBasePlugin)
-	cfg.addPlugin(pluginBundle)
+  cfg.addPlugin(pluginBundle)
   cfg.addPlugin(pluginSyntaxHighlight, {
-    templateFormats: ["md"]
+    templateFormats: ['md'],
   })
 }
 
@@ -80,16 +79,16 @@ const strayPostcss = () => {
     postcssNested,
     postcssImport,
     tailwindcss({
-      content: ["./dist/**/*.html"]
+      content: ['./dist/**/*.html'],
     }),
     postcssPurgecss({
-      content: ["./dist/**/*.html"]
+      content: ['./dist/**/*.html'],
     }),
-    cssnano({preset:
-      cssnanoPreset({
-        discardComments: {removeAll: true}
-      })
-    })
+    cssnano({
+      preset: cssnanoPreset({
+        discardComments: { removeAll: true },
+      }),
+    }),
   ]
   fs.readFile(cssEntry, (err, css) => {
     if (err) {
@@ -100,8 +99,9 @@ const strayPostcss = () => {
       .process(css, {
         map: { inline: false, annotation: true },
         to: cssDist,
-        from: cssEntry
-      }).then(result => {
+        from: cssEntry,
+      })
+      .then((result) => {
         fs.writeFileSync(cssDist, result.css)
         if (result.map) {
           fs.writeFileSync(cssMapDist, result.map.toString())
