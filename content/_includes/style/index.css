@@ -1,8 +1,31 @@
-:root {
-	--font-family: -apple-system, system-ui, sans-serif;
-	--font-family-monospace: Consolas, Menlo, Monaco, Andale Mono WT, Andale Mono, Lucida Console, Lucida Sans Typewriter, DejaVu Sans Mono, Bitstream Vera Sans Mono, Liberation Mono, Nimbus Mono L, Courier New, Courier, monospace;
+main {
+	padding: 1rem;
+}
+main :first-child {
+	margin-top: 0;
 }
 
-::placeholder {
-  color: gray;
+/* Header */
+header {
+	display: flex;
+	gap: 1em .5em;
+	flex-wrap: wrap;
+	align-items: center;
+	padding: 1em;
+  border-bottom: 1px dashed var(--color-gray-20);
 }
+.home-link {
+	font-size: 1em; /* 16px /16 */
+	font-weight: 700;
+	margin-right: 2em;
+}
+header:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+.home-link:link:not(:hover) {
+	text-decoration: none;
+}
+

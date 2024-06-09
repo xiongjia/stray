@@ -5,6 +5,11 @@ const pluginBundle = require('@11ty/eleventy-plugin-bundle')
 const { EleventyHtmlBasePlugin } = require('@11ty/eleventy')
 const pluginSyntaxHighlight = require('@11ty/eleventy-plugin-syntaxhighlight')
 
+const {
+  strayFilterHtmlDateString,
+  strayFilterReadableDate,
+} = require('./eleventy.filter.config.js')
+
 const strayLog = (data) => {
   console.log(`[stray] ${data}`)
 }
@@ -32,4 +37,14 @@ const strayInit11tyTansform = (cfg) => {
   })
 }
 
-module.exports = { strayLog, strayInit11tyPlugins, strayInit11tyTansform }
+const strayInit11tyFilter = (cfg) => {
+  cfg.addFilter('readableDate', strayFilterReadableDate)
+  cfg.addFilter('htmlDateString', strayFilterHtmlDateString)
+}
+
+module.exports = {
+  strayLog,
+  strayInit11tyPlugins,
+  strayInit11tyTansform,
+  strayInit11tyFilter,
+}
