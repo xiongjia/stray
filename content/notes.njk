@@ -5,11 +5,11 @@ eleventyNavigation:
   order: 2
 ---
 
-<h2 class="text-3xl font-bold">Dev Notes</h1>
+<h2 class="text-3xl font-bold">Notes</h1>
 
-{% set devNotes = collections.dev %}
+{% set notes = collections.notes %}
 <ol>
-  {% for note in devNotes %}
+  {% for note in notes %}
 	<li>
     <a href='{{ note.url }}' >
       {% if note.data.title %}{{ note.data.title }}{% else %}<code>{{ note.url }}</code>{% endif %}
