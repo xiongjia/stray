@@ -55,4 +55,10 @@ const strayPostcss = () => {
   })
 }
 
-module.exports = { strayPostcss }
+const strayInit11tyEvent = (cfg) => {
+  cfg.on('eleventy.after', async () => {
+    strayPostcss()
+  })
+}
+
+module.exports = { strayInit11tyEvent }
