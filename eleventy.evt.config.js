@@ -1,4 +1,4 @@
-const fs = require('node:fs')
+const fs = require('node:fs/promises')
 const path = require('node:path')
 
 const postcss = require('postcss')
@@ -12,7 +12,7 @@ const cssnanoPreset = require('cssnano-preset-lite')
 
 const { strayLog } = require('./eleventy.infra.config.js')
 
-const strayPostcss = () => {
+const strayPostcss = async () => {
   const cssEntry = path.join(__dirname, 'content/_includes/style/stray.css')
   strayLog(`Postcss input ${cssEntry}`)
 
@@ -35,29 +35,23 @@ const strayPostcss = () => {
       }),
     }),
   ]
-  fs.readFile(cssEntry, (err, css) => {
-    if (err) {
-      strayLog(`Load css file ${css} failed, error: ${err}`)
-      throw err
-    }
-    postcss(plugins)
-      .process(css, {
-        map: { inline: false, annotation: true },
-        to: cssDist,
-        from: cssEntry,
-      })
-      .then((result) => {
-        fs.writeFileSync(cssDist, result.css)
-        if (result.map) {
-          fs.writeFileSync(cssMapDist, result.map.toString())
-        }
-      })
+
+  const cssContent = await fs.readFile(cssEntry)
+  const result = await postcss(plugins).process(cssContent, {
+    map: { inline: false, annotation: true },
+    to: cssDist,
+    from: cssEntry,
   })
+
+  await fs.writeFile(cssDist, result.css)
+  if (result.map) {
+    await fs.writeFile(cssMapDist, result.map.toString())
+  }
 }
 
 const strayInit11tyEvent = (cfg) => {
   cfg.on('eleventy.after', async () => {
-    strayPostcss()
+    await strayPostcss()
   })
 }
 
