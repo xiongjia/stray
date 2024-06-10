@@ -4,6 +4,7 @@ const markdownItEmoji = require('markdown-it-emoji')
 
 const pluginNavigation = require('@11ty/eleventy-navigation')
 const pluginBundle = require('@11ty/eleventy-plugin-bundle')
+const pluginDirOutput = require('@11ty/eleventy-plugin-directory-output')
 const { EleventyHtmlBasePlugin } = require('@11ty/eleventy')
 const pluginSyntaxHighlight = require('@11ty/eleventy-plugin-syntaxhighlight')
 
@@ -22,6 +23,10 @@ const strayInit11tyPlugins = (cfg) => {
   cfg.addPlugin(pluginBundle)
   cfg.addPlugin(pluginSyntaxHighlight, {
     templateFormats: ['md'],
+  })
+  cfg.addPlugin(pluginDirOutput, {
+    columns: { filesize: true, benchmark: true },
+    warningFileSize: 500 * 1024,
   })
 }
 
