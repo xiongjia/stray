@@ -49,9 +49,18 @@ const strayPostcss = async () => {
   }
 }
 
+const strayPagFind = async () => {
+  strayLog('init page find')
+  const pagefind = await import('pagefind')
+  const { index } = await pagefind.createIndex()
+  await index.addDirectory({ path: 'dist' })
+  await index.writeFiles({ outputPath: 'dist/pagefind' })
+}
+
 const strayInit11tyEvent = (cfg) => {
   cfg.on('eleventy.after', async () => {
     await strayPostcss()
+    await strayPagFind()
   })
 }
 

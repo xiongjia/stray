@@ -68,6 +68,9 @@ importers:
       prettier:
         specifier: 3.3.1
         version: 3.3.1
+      rimraf:
+        specifier: ^5.0.7
+        version: 5.0.7
       tailwindcss:
         specifier: ^3.4.3
         version: 3.4.3
@@ -1561,6 +1564,11 @@ packages:
   rimraf@2.7.1:
     resolution: {integrity: sha512-uWjbaKIK3T1OSVptzX7Nl6PvQ3qAGtKEtVRjRuazjfL3Bx5eI409VZSqgND+4UNnmzLVdPj9FqFJNPqBZFve4w==}
     deprecated: Rimraf versions prior to v4 are no longer supported
+    hasBin: true
+
+  rimraf@5.0.7:
+    resolution: {integrity: sha512-nV6YcJo5wbLW77m+8KjH8aB/7/rxQy9SZ0HY5shnwULfS+9nmTtVXAJET5NdZmCzA4fPI/Hm1wo/Po/4mopOdg==}
+    engines: {node: '>=14.18'}
     hasBin: true
 
   run-parallel@1.2.0:
@@ -3321,6 +3329,10 @@ snapshots:
   rimraf@2.7.1:
     dependencies:
       glob: 7.2.3
+
+  rimraf@5.0.7:
+    dependencies:
+      glob: 10.4.1
 
   run-parallel@1.2.0:
     dependencies:
