@@ -20,3 +20,11 @@ eleventyNavigation:
   </div>
 </div>
 
+
+<div x-data="{ open: false }">
+    <button @click="open = ! open">Expand</button>
+    <br>
+    <span x-show="open">
+        Content...
+    </span>
+</div>
