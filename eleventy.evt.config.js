@@ -10,6 +10,8 @@ const tailwindcss = require('tailwindcss')
 const cssnano = require('cssnano')
 const cssnanoPreset = require('cssnano-preset-lite')
 
+const esbuild = require('esbuild')
+
 const { strayLog } = require('./eleventy.infra.config.js')
 
 const strayPostcss = async () => {
@@ -49,6 +51,19 @@ const strayPostcss = async () => {
   }
 }
 
+const strayEsBuild = async () => {
+  const jsEntry = path.join(__dirname, 'content/_includes/js/stray.mjs')
+  const jsDist = path.join(__dirname, 'dist/bundle.js')
+  strayLog(`JS input ${jsEntry}`)
+  await esbuild.build({
+    entryPoints: [jsEntry],
+    bundle: true,
+    outfile: jsDist,
+    sourcemap: true,
+    minify: true,
+  })
+}
+
 const strayPagFind = async () => {
   strayLog('init page find')
   const pagefind = await import('pagefind')
@@ -61,6 +76,7 @@ const strayInit11tyEvent = (cfg) => {
   cfg.on('eleventy.after', async () => {
     await strayPostcss()
     await strayPagFind()
+    await strayEsBuild()
   })
 }
 
