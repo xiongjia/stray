@@ -1,0 +1,11 @@
+const config = {
+  tabWidth: 2,
+  semi: false,
+  singleQuote: true,
+  quoteProps: 'as-needed',
+  jsxSingleQuote: false,
+  trailingComma: 'es5',
+  endOfLine: 'lf',
+}
+
+export default config

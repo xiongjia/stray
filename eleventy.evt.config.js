@@ -26,6 +26,7 @@ const strayPostcss = async () => {
     postcssNested,
     postcssImport,
     tailwindcss({
+      darkMode: 'class',
       content: ['./dist/**/*.html'],
     }),
     postcssPurgecss({
@@ -75,8 +76,9 @@ const strayPagFind = async () => {
 const strayInit11tyEvent = (cfg) => {
   cfg.on('eleventy.after', async () => {
     await strayPostcss()
-    await strayPagFind()
     await strayEsBuild()
+
+    await strayPagFind()
   })
 }
 

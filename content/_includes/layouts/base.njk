@@ -1,15 +1,14 @@
 <!doctype html>
-<html class="scroll-smooth" lang="{{ metadata.language }}">
+<html class="scroll-smooth dark" lang="{{ metadata.language }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="{{ description or metadata.description }}">
-
-  <title>{{ title or metadata.title }}</title>
   <link rel="stylesheet" type="text/css" href="/bundle.css">
+  <title>{{ title or metadata.title }}</title>
 </head>
 
-<body class="bg-gray-100 font-mono dark:bg-red-500 text-gray-800 dark:text-white text-sm">
+<body x-data="{ darkMode: false }" class="bg-gray-100 font-mono dark:bg-red-500 text-gray-800 dark:text-white text-sm">
   <main>
     <header >
       <nav class="border-gray-200 dark:bg-gray-900 dark:border-gray-700">
@@ -21,7 +20,37 @@
           </a>
         </div>
       </nav>
-      </header>
+    </header>
+
+      <div  x-data="{
+            mode: '',
+            setColorMode: m => {
+                if (m === 'dark') {
+                    document.documentElement.classList.add('dark')
+                    localStorage.setItem('colorMode', 'dark')
+                } else {
+                    document.documentElement.classList.remove('dark')
+                    localStorage.setItem('colorMode', 'light')
+                }
+            }
+        }">
+         <button
+    @click="mode='light'; setColorMode('light');"
+    :class="{'font-bold': mode === 'light', 'font-thin': mode !== 'light' }"
+    class="underline px-2 py-1 rounded-md border-white hover:bg-gray-100 dark:hover:bg-gray-800"
+    >
+    light
+  </button>
+
+<button
+    @click="mode = 'dark'; setColorMode('dark');"
+    :class="{'bg-gray-700 text-gray-200 border border-solid border-gray-600 font-bold': mode === 'dark', 'font-thin': mode !== 'dark' }"
+    class="underline px-2 py-1 rounded-md hover:bg-white dark:hover:bg-gray-800"
+    >
+    dark
+  </button>
+      </div>
+    </div>
 
     <div>
       {{ content | safe }}
