@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "eslint": "npx eslint",
     "build-ghpages": "rimraf dist && npx eslint && npx @11ty/eleventy --pathprefix=/stray/",
     "build": "npx eslint && npx @11ty/eleventy",
-    "start": "npx eslint && npx @11ty/eleventy --serve --quiet",
+    "start": "npx eslint && npx @11ty/eleventy --serve --quiet --port 8110",
     "clean": "rimraf dist"
   },
   "keywords": [],
