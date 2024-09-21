@@ -1,59 +1,16 @@
-const fs = require('node:fs/promises')
-const path = require('node:path')
-
-const postcss = require('postcss')
-const postcssNested = require('postcss-nested')
-const postcssAutoprefixer = require('autoprefixer')
-const postcssImport = require('postcss-import')
-const postcssPurgecss = require('@fullhuman/postcss-purgecss')
-const tailwindcss = require('tailwindcss')
-const cssnano = require('cssnano')
-const cssnanoPreset = require('cssnano-preset-lite')
 const esbuild = require('esbuild')
+const { strayBuildConf } = require('./const.js')
 
-const { strayLog } = require('./misc.js')
+const { strayLog, processPostcss } = require('./misc.js')
 
 const strayPostcss = async () => {
-  const cssEntry = path.join(__dirname, 'content/_includes/style/stray.css')
-  strayLog(`Postcss input ${cssEntry}`)
-
-  const cssDist = path.join(__dirname, 'dist/bundle.css')
-  const cssMapDist = path.join(__dirname, 'dist/bundle.css.map')
-
-  const plugins = [
-    postcssAutoprefixer,
-    postcssNested,
-    postcssImport,
-    tailwindcss({
-      darkMode: 'class',
-      content: ['./dist/**/*.html'],
-    }),
-    postcssPurgecss({
-      content: ['./dist/**/*.html'],
-    }),
-    cssnano({
-      preset: cssnanoPreset({
-        discardComments: { removeAll: true },
-      }),
-    }),
-  ]
-
-  const cssContent = await fs.readFile(cssEntry)
-  const result = await postcss(plugins).process(cssContent, {
-    map: { inline: false, annotation: true },
-    to: cssDist,
-    from: cssEntry,
-  })
-
-  await fs.writeFile(cssDist, result.css)
-  if (result.map) {
-    await fs.writeFile(cssMapDist, result.map.toString())
-  }
+  const cssEntry = strayBuildConf.makeContentPath('_includes/style/stray.css')
+  await processPostcss({ cssEntry })
 }
 
 const strayEsBuild = async () => {
-  const jsEntry = path.join(__dirname, 'content/_includes/js/stray.mjs')
-  const jsDist = path.join(__dirname, 'dist/bundle.js')
+  const jsEntry = strayBuildConf.makeContentPath('_includes/js/stray.mjs')
+  const jsDist = strayBuildConf.makeDistPath('bundle.js')
   strayLog(`JS input ${jsEntry}`)
   await esbuild.build({
     entryPoints: [jsEntry],
@@ -68,8 +25,10 @@ const strayPagFind = async () => {
   strayLog('init page find')
   const pagefind = await import('pagefind')
   const { index } = await pagefind.createIndex()
-  await index.addDirectory({ path: 'dist' })
-  await index.writeFiles({ outputPath: 'dist/pagefind' })
+  await index.addDirectory({ path: strayBuildConf.dist })
+  await index.writeFiles({
+    outputPath: strayBuildConf.makeDistPath('pagefind'),
+  })
 }
 
 const strayInit11tyEvent = (cfg) => {

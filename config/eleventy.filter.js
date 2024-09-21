@@ -11,7 +11,11 @@ const strayFilterReadableDate = (dateObj, format, zone) => {
   )
 }
 
+const strayInit11tyFilter = (cfg) => {
+  cfg.addFilter('readableDate', strayFilterReadableDate)
+  cfg.addFilter('htmlDateString', strayFilterHtmlDateString)
+}
+
 module.exports = {
-  strayFilterHtmlDateString,
-  strayFilterReadableDate,
+  strayInit11tyFilter,
 }
