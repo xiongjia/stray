@@ -4,9 +4,8 @@ const {
   strayInit11tyTansform,
   strayInit11tyFilter,
   strayInit11tyLib,
-} = require('./eleventy.infra.config.js')
-
-const { strayInit11tyEvent } = require('./eleventy.evt.config.js')
+  strayInit11tyEvent,
+} = require('./config/eleventy.infra.js')
 
 module.exports = (cfg) => {
   strayLog('Stray 11ty build conf')

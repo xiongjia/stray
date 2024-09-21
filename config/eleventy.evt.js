@@ -9,10 +9,9 @@ const postcssPurgecss = require('@fullhuman/postcss-purgecss')
 const tailwindcss = require('tailwindcss')
 const cssnano = require('cssnano')
 const cssnanoPreset = require('cssnano-preset-lite')
-
 const esbuild = require('esbuild')
 
-const { strayLog } = require('./eleventy.infra.config.js')
+const { strayLog } = require('./misc.js')
 
 const strayPostcss = async () => {
   const cssEntry = path.join(__dirname, 'content/_includes/style/stray.css')
@@ -77,7 +76,6 @@ const strayInit11tyEvent = (cfg) => {
   cfg.on('eleventy.after', async () => {
     await strayPostcss()
     await strayEsBuild()
-
     await strayPagFind()
   })
 }
