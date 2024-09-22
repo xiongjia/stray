@@ -4,12 +4,12 @@ const { strayBuildConf } = require('./const.js')
 const { strayLog, processPostcss } = require('./misc.js')
 
 const strayPostcss = async () => {
-  const cssEntry = strayBuildConf.makeContentPath('_includes/style/stray.css')
+  const cssEntry = strayBuildConf.makeIncludesPath('style/stray.css')
   await processPostcss({ cssEntry })
 }
 
 const strayEsBuild = async () => {
-  const jsEntry = strayBuildConf.makeContentPath('_includes/js/stray.mjs')
+  const jsEntry = strayBuildConf.makeIncludesPath('js/stray.mjs')
   const jsDist = strayBuildConf.makeDistPath('bundle.js')
   strayLog(`JS input ${jsEntry}`)
   await esbuild.build({
@@ -22,8 +22,8 @@ const strayEsBuild = async () => {
 }
 
 const strayPagFind = async () => {
-  strayLog('init page find')
   const pagefind = await import('pagefind')
+  strayLog('init page find')
   const { index } = await pagefind.createIndex()
   await index.addDirectory({ path: strayBuildConf.dist })
   await index.writeFiles({

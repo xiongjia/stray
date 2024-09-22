@@ -4,6 +4,7 @@ const { strayInit11tyPlugins } = require('./eleventy.plugins.js')
 const { strayInit11tyTansform } = require('./eleventy.tran.js')
 const { strayInit11tyLib } = require('./eleventy.lib.js')
 const { strayLog } = require('./misc.js')
+const { strayBuildConf } = require('./const.js')
 
 module.exports = {
   strayLog,
@@ -12,4 +13,5 @@ module.exports = {
   strayInit11tyFilter,
   strayInit11tyLib,
   strayInit11tyEvent,
+  strayBuildConf,
 }

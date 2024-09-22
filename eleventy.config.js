@@ -5,6 +5,7 @@ const {
   strayInit11tyFilter,
   strayInit11tyLib,
   strayInit11tyEvent,
+  strayBuildConf,
 } = require('./config/eleventy.infra.js')
 
 module.exports = (cfg) => {
@@ -14,17 +15,15 @@ module.exports = (cfg) => {
   strayInit11tyFilter(cfg)
   strayInit11tyLib(cfg)
   strayInit11tyEvent(cfg)
-
   return {
     templateFormats: ['md', 'njk', 'html', 'liquid'],
     markdownTemplateEngine: 'njk',
     htmlTemplateEngine: 'njk',
-
     dir: {
-      input: 'content',
-      includes: '_includes',
-      data: '_data',
-      output: 'dist',
+      input: strayBuildConf.pathContent,
+      includes: strayBuildConf.pathInclude,
+      data: strayBuildConf.pathData,
+      output: strayBuildConf.pathDist,
     },
   }
 }
